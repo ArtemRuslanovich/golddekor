@@ -1,0 +1,135 @@
+{% extends "catalog/base.html" %}
+{% load static %}
+
+{% block title %}{{ product.name }} - GoldDecor{% endblock %}
+
+{% block extra_head %}
+<meta name="description" content="{{ product.name }} — купить онлайн в GoldDecor. Цена: {{ product.price|floatformat:2 }} ₽.">
+{% endblock %}
+
+{% block content %}
+<nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb bg-transparent px-0">
+        <li class="breadcrumb-item"><a href="{% url 'catalog:product_list' %}">🏠 Главная</a></li>
+        <li class="breadcrumb-item"><a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a></li>
+        <li class="breadcrumb-item active">{{ product.name }}</li>
+    </ol>
+</nav>
+
+<div class="row g-4">
+    <!-- Фото товара -->
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-body text-center">
+                <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
+                     alt="{{ product.name }}"
+                     class="img-fluid rounded shadow-sm"
+                     style="max-height: 480px; object-fit: contain; transition: opacity .3s ease-in-out;">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Информация о товаре -->
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h1 class="fw-bold mb-3">{{ product.name }}</h1>
+                
+                <span class="badge bg-secondary mb-3">{{ product.category.name }}</span>
+                
+                <h2 class="text-gold fw-bold mb-4">{{ product.price|floatformat:2 }} ₽</h2>
+                
+                <div class="mb-4">
+                    <h5>Описание</h5>
+                    <p class="card-text">
+                        {% if product.description %}
+                            {{ product.description|linebreaks }}
+                        {% else %}
+                            Описание отсутствует.
+                        {% endif %}
+                    </p>
+                </div>
+                
+                <div class="mb-4">
+                    <h5>Наличие</h5>
+                    {% if product.stock > 0 %}
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-success me-2">В наличии</span>
+                            <small class="text-muted">Осталось: {{ product.stock }} шт.</small>
+                        </div>
+                    {% else %}
+                        <span class="badge bg-danger">Нет в наличии</span>
+                    {% endif %}
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex">
+                    <a href="{% url 'catalog:product_list' %}" class="btn btn-outline-secondary me-md-2">
+                        ← Назад
+                    </a>
+                    
+                    {% if user.is_authenticated %}
+                        {% if product.stock > 0 %}
+                        <form action="{% url 'cart:cart_add' product.id %}" method="post" class="flex-fill">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-gold w-100">
+                                🛒 Добавить в корзину
+                            </button>
+                        </form>
+                        {% else %}
+                        <button class="btn btn-secondary" disabled>Нет в наличии</button>
+                        {% endif %}
+                    {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-outline-primary">
+                        🔒 Войдите для покупки
+                    </a>
+                    {% endif %}
+                </div>
+
+                {% if product.created %}
+                <div class="mt-4 pt-3 border-top small text-muted">
+                    Добавлен: {{ product.created|date:"d.m.Y" }}
+                    {% if product.updated != product.created %}
+                        <br>Обновлён: {{ product.updated|date:"d.m.Y" }}
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Условия доставки -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">📦 Условия доставки</h5>
+            </div>
+            <div class="card-body">
+                <p class="mb-0">Бесплатная доставка при заказе от <strong>10 000 ₽</strong>. 
+                Отправляем по всей России. Самовывоз — бесплатно.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Похожие товары -->
+{% if related_products %}
+<div class="row mt-5">
+    <div class="col-12">
+        <h4 class="mb-4">🛍 Похожие товары</h4>
+        <div class="product-grid">
+            {% for p in related_products %}
+            <div class="product-card">
+                <img src="{% if p.image %}{{ p.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
+                     alt="{{ p.name }}" class="product-image mb-3">
+                <h6>{{ p.name }}</h6>
+                <p class="text-primary fw-bold">{{ p.price|floatformat:2 }} ₽</p>
+                <a href="{{ p.get_absolute_url }}" class="btn btn-outline-primary btn-sm">Подробнее</a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

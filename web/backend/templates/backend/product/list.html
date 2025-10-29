@@ -1,0 +1,159 @@
+{% extends "backend/base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if category %}{{ category.name }} - {% endif %}Товары
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Сайдбар с категориями -->
+    <div class="col-lg-3 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">🏷️ Категории</h5>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="{% url 'backend:product_list' %}" 
+                   class="list-group-item list-group-item-action {% if not category %}category-active{% endif %}">
+                    Все категории
+                </a>
+                {% for cat in categories %}
+                <a href="{{ cat.get_absolute_url }}" 
+                   class="list-group-item list-group-item-action {% if category.slug == cat.slug %}category-active{% endif %}">
+                    {{ cat.name }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="col-lg-9">
+        <!-- Поиск и заголовок -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>
+                {% if category %}
+                    {{ category.name }}
+                {% else %}
+                    Все товары
+                {% endif %}
+            </h1>
+            
+            <form method="get" class="d-flex">
+                <input type="text" name="q" class="form-control me-2" placeholder="Поиск товаров..." 
+                       value="{{ query|default:'' }}">
+                <button class="btn btn-gold" type="submit">🔍 Найти</button>
+            </form>
+        </div>
+
+        {% if query %}
+        <div class="alert alert-info">
+            Результаты поиска для: "<strong>{{ query }}</strong>"
+            <a href="{% url 'backend:product_list' %}" class="float-end">Показать все товары</a>
+        </div>
+        {% endif %}
+
+        <!-- Сетка товаров -->
+        {% if products %}
+            <div class="product-grid">
+                {% for product in products %}
+                <div class="product-card">
+                    <div class="mb-3">
+                        <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" 
+                             alt="{{ product.name }}" class="product-image">
+                    </div>
+                    
+                    <h5 class="product-title">{{ product.name }}</h5>
+                    
+                    {% if product.category %}
+                    <p class="text-muted small mb-2">{{ product.category.name }}</p>
+                    {% endif %}
+                    
+                    <p class="h5 text-primary mb-3">{{ product.price|floatformat:2 }} ₽</p>
+                    
+                    <div class="mb-3">
+                        {% if product.stock > 0 %}
+                            <span class="badge bg-success">В наличии</span>
+                        {% else %}
+                            <span class="badge bg-danger">Нет в наличии</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <a href="{{ product.get_absolute_url }}" class="btn btn-outline-primary btn-sm">
+                            📋 Подробнее
+                        </a>
+                        
+                        {% if user.is_authenticated and product.stock > 0 %}
+                        <form action="{% url 'backend:cart_add' product.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-gold btn-sm w-100">
+                                🛒 В корзину
+                            </button>
+                        </form>
+                        {% elif not user.is_authenticated %}
+                        <a href="{% url 'login' %}" class="btn btn-outline-secondary btn-sm">
+                            🔒 Войдите для покупки
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Пагинация -->
+            {% if products.has_other_pages %}
+            <nav aria-label="Page navigation" class="mt-5">
+                <ul class="pagination justify-content-center">
+                    {% if products.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ products.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                            ← Назад
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for i in products.paginator.page_range %}
+                        {% if products.number == i %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ i }}</span>
+                        </li>
+                        {% else %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ i }}{% if query %}&q={{ query }}{% endif %}">{{ i }}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if products.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ products.next_page_number }}{% if query %}&q={{ query }}{% endif %}">
+                            Вперед →
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+
+        {% else %}
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <h3>😔 Товары не найдены</h3>
+                </div>
+                <p class="text-muted mb-4">
+                    {% if query %}
+                        По вашему запросу "{{ query }}" ничего не найдено.
+                    {% else %}
+                        В данной категории пока нет товаров.
+                    {% endif %}
+                </p>
+                <a href="{% url 'backend:product_list' %}" class="btn btn-gold">
+                    Вернуться к всем товарам
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

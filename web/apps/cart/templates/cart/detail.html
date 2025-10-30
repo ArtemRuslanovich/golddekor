@@ -39,7 +39,7 @@
                                 </div>
                             </td>
 
-                            <td><strong>{{ item.price|floatformat:2 }} ₽</strong></td>
+                            <td><strong>{{ item.price|floatformat:2 }} р</strong></td>
 
                             <td>
                                 <form action="{% url 'cart:cart_update' item.product.id %}" method="post" class="d-flex align-items-center">
@@ -54,7 +54,7 @@
                                 <small class="text-muted">макс: {{ item.product.stock }} шт.</small>
                             </td>
 
-                            <td><strong>{{ item.total_price|floatformat:2 }} ₽</strong></td>
+                            <td><strong>{{ item.total_price|floatformat:2 }} р</strong></td>
 
                             <td>
                                 <form action="{% url 'cart:cart_remove' item.product.id %}" method="post" 
@@ -72,7 +72,7 @@
                         <tr>
                             <td colspan="3" class="text-end fw-bold">Итого:</td>
                             <td colspan="2" class="fw-bold h5 text-gold">
-                                {{ cart.get_total_price|floatformat:2 }} ₽
+                                {{ cart.get_total_price|floatformat:2 }} р
                             </td>
                         </tr>
                     </tfoot>

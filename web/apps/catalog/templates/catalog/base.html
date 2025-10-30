@@ -47,7 +47,12 @@
                             <ul class="dropdown-menu">
                                 <li><span class="dropdown-item-text text-muted">Вы вошли как {{ user.username }}</span></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
+                                <li>
+                                    <form method="post" action="{% url 'logout' %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item border-0 bg-transparent">Выйти</button>
+                                    </form>
+                                </li>
                             </ul>
                         </li>
                     {% else %}

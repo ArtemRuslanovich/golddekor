@@ -142,6 +142,12 @@ LOGOUT_REDIRECT_URL = 'catalog:product_list'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://web-b91skqcwvd56.up-de-fra1-k8s-1.apps.run-on-seenode.com',
+    'http://127.0.0.1:8000',
+    'http://localhost:8000',
+]
+
 # SECURE_SSL_REDIRECT = True
 # SESSION_COOKIE_SECURE = True
 # CSRF_COOKIE_SECURE = True

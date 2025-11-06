@@ -596,3 +596,61 @@ footer {
 .form-hint-list li {
     margin-bottom: 0.2rem;
 }
+
+/* ---------- CATEGORY DROPDOWN ---------- */
+.category-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.category-toggle {
+    background-color: #00B3FF;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.category-toggle:hover {
+    background-color: #0095d9;
+}
+
+.category-menu {
+    display: none;
+    position: absolute;
+    top: 110%;
+    left: 0;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    min-width: 220px;
+    z-index: 10;
+    overflow: hidden;
+}
+
+.category-dropdown:hover .category-menu {
+    display: flex;
+    flex-direction: column;
+}
+
+.category-item {
+    padding: 10px 14px;
+    text-decoration: none;
+    color: #222;
+    transition: background 0.2s, color 0.2s;
+}
+
+.category-item:hover {
+    background: #eaf7ff;
+    color: #00B3FF;
+}
+
+.category-item.active {
+    background-color: #00B3FF;
+    color: #fff;
+    font-weight: 600;
+}

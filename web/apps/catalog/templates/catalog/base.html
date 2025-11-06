@@ -22,10 +22,23 @@
             </a>
 
             <nav class="nav-links" style="display:flex;align-items:center;gap:1rem;">
-                <a href="{% url 'catalog:product_list' %}"
-                    class="nav-link {% if request.path == '/' %}active{% endif %}">
-                    Все товары
-                </a>
+
+                <!-- 🔽 Кнопка Категории -->
+                <div class="category-dropdown">
+                    <button class="category-toggle">Категории ▾</button>
+                    <div class="category-menu">
+                        <a href="{% url 'catalog:product_list' %}"
+                            class="category-item {% if not category %}active{% endif %}">
+                            Все категории
+                        </a>
+                        {% for cat in categories %}
+                        <a href="{{ cat.get_absolute_url }}"
+                            class="category-item {% if category and category.slug == cat.slug %}active{% endif %}">
+                            {{ cat.name }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
 
                 {% if user.is_authenticated %}
                 <a href="{% url 'cart:cart_detail' %}"

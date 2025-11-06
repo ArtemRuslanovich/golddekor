@@ -13,16 +13,13 @@
 </head>
 
 <body>
-    <!-- Навигация -->
     <header class="navbar">
-        <div class="container"
-            style="display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.5rem;">
+        <div class="container">
             <a href="{% url 'catalog:product_list' %}" class="navbar-brand">
                 🏠 GoldDecor
             </a>
 
-            <nav class="nav-links" style="display:flex;align-items:center;gap:1rem;">
-
+            <nav class="nav-links">
                 <!-- 🔽 Кнопка Каталог -->
                 <div class="catalog-container" id="catalogContainer">
                     <button class="catalog-btn" id="catalogBtn">
@@ -53,28 +50,23 @@
                     class="nav-link {% if 'cart' in request.path %}active{% endif %}">
                     🛒 Корзина
                     {% if cart|length > 0 %}
-                    <span class="badge"
-                        style="background: var(--accent); color:#fff; padding:3px 8px; border-radius:6px; font-size:0.8rem;">
-                        {{ cart|length }}
-                    </span>
+                    <span class="cart-badge">{{ cart|length }}</span>
                     {% endif %}
                 </a>
 
-                <div class="user-menu" style="position:relative;">
+                <div class="user-menu">
                     <details>
-                        <summary style="list-style:none;cursor:pointer;" class="nav-link">
+                        <summary class="nav-link user-summary">
                             👤 {{ user.get_full_name|default:user.username }}
                         </summary>
-                        <div class="dropdown"
-                            style="position:absolute;right:0;top:120%;background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);min-width:180px;z-index:10;">
-                            <div style="padding:0.8rem;color:var(--text-muted);font-size:0.9rem;">
+                        <div class="dropdown">
+                            <div class="user-info">
                                 Вы вошли как <strong>{{ user.username }}</strong>
                             </div>
-                            <hr style="border:none;border-top:1px solid var(--border);margin:0;">
-                            <form method="post" action="{% url 'logout' %}" style="margin:0;">
+                            <hr>
+                            <form method="post" action="{% url 'logout' %}">
                                 {% csrf_token %}
-                                <button type="submit"
-                                    style="width:100%;background:none;border:none;padding:0.8rem;text-align:left;cursor:pointer;color:var(--text-dark);font-size:0.95rem;">
+                                <button type="submit" class="logout-btn">
                                     🚪 Выйти
                                 </button>
                             </form>
@@ -89,12 +81,23 @@
         </div>
     </header>
 
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 GoldDecor. Все права защищены.</p>
+        </div>
+    </footer>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const btn = document.getElementById('catalogBtn');
             const container = document.getElementById('catalogContainer');
 
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
                 container.classList.toggle('active');
             });
 

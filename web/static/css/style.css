@@ -597,60 +597,107 @@ footer {
     margin-bottom: 0.2rem;
 }
 
-/* ---------- CATEGORY DROPDOWN ---------- */
-.category-dropdown {
+/* ---------- КНОПКА КАТАЛОГ ---------- */
+.catalog-container {
     position: relative;
-    display: inline-block;
 }
 
-.category-toggle {
-    background-color: #00B3FF;
+.catalog-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #02244a;
     color: #fff;
     border: none;
-    border-radius: 10px;
-    padding: 10px 18px;
-    font-size: 16px;
-    font-weight: 500;
+    border-radius: 15px;
     cursor: pointer;
-    transition: background 0.2s ease;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 10px 20px;
+    transition: background 0.2s ease-in-out;
 }
 
-.category-toggle:hover {
-    background-color: #0095d9;
+.catalog-btn:hover {
+    background-color: #053e7f;
 }
 
-.category-menu {
-    display: none;
+.burger {
+    display: inline-block;
+    position: relative;
+    width: 22px;
+    height: 16px;
+}
+
+.burger span {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #fff;
+    transition: all 0.25s ease-in-out;
+}
+
+.burger span:nth-child(1) {
+    top: 0;
+}
+
+.burger span:nth-child(2) {
+    top: 7px;
+}
+
+.burger span:nth-child(3) {
+    bottom: 0;
+}
+
+/* ---------- МЕНЮ КАТЕГОРИЙ ---------- */
+.catalog-menu {
     position: absolute;
     top: 110%;
     left: 0;
+    width: 280px;
     background: #fff;
-    border-radius: 10px;
+    border-radius: 12px;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-    min-width: 220px;
-    z-index: 10;
+    display: none;
+    flex-direction: column;
+    z-index: 20;
     overflow: hidden;
 }
 
-.category-dropdown:hover .category-menu {
-    display: flex;
-    flex-direction: column;
-}
-
-.category-item {
-    padding: 10px 14px;
-    text-decoration: none;
+.catalog-item {
+    padding: 12px 18px;
     color: #222;
+    text-decoration: none;
+    font-size: 16px;
     transition: background 0.2s, color 0.2s;
 }
 
-.category-item:hover {
+.catalog-item:hover {
     background: #eaf7ff;
     color: #00B3FF;
 }
 
-.category-item.active {
-    background-color: #00B3FF;
+.catalog-item.active {
+    background: #00B3FF;
     color: #fff;
     font-weight: 600;
+}
+
+/* ---------- АКТИВНОЕ СОСТОЯНИЕ ---------- */
+.catalog-container.active .catalog-menu {
+    display: flex;
+}
+
+.catalog-container.active .burger span:nth-child(1) {
+    transform: rotate(45deg);
+    top: 7px;
+}
+
+.catalog-container.active .burger span:nth-child(2) {
+    opacity: 0;
+}
+
+.catalog-container.active .burger span:nth-child(3) {
+    transform: rotate(-45deg);
+    bottom: 7px;
 }

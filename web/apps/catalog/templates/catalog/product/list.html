@@ -9,17 +9,21 @@
 
 <!-- Хлебные крошки -->
 <nav class="breadcrumbs">
-    <a href="{% url 'catalog:product_list' %}">Главная</a>
-    <span class="separator">›</span>
-    {% if category %}
-    <a href="{{ category.get_absolute_url }}">{{ category.name }}</a>
-    <span class="separator">›</span>
-    {% endif %}
-    <span>Товары</span>
+    <div class="breadcrumbs-nav">
+        <a href="{% url 'catalog:product_list' %}">Главная</a>
+        <span class="separator">›</span>
+        {% if category %}
+        <a href="{{ category.get_absolute_url }}">{{ category.name }}</a>
+        <span class="separator">›</span>
+        {% endif %}
+        <span>Товары</span>
+    </div>
 
     <form method="get" class="search-form">
         <input type="text" name="q" placeholder="Поиск товаров..." value="{{ query|default:'' }}" class="search-input">
-        <button type="submit" class="btn">🔍 Поиск</button>
+        <button type="submit" class="btn">
+            <span>🔍 Поиск</span>
+        </button>
     </form>
 </nav>
 

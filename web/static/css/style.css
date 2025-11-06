@@ -92,7 +92,7 @@ a {
 }
 
 a:hover {
-    color: var(--accent-dark);
+    color: #fff;
 }
 
 /* ------------------------------
@@ -591,14 +591,23 @@ a:hover {
     margin-bottom: 2rem;
     font-size: 0.95rem;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 1rem;
     padding: 1rem 1.5rem;
     background: var(--bg-light);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     border-left: 4px solid var(--accent);
+    position: relative;
+}
+
+.breadcrumbs-nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .breadcrumbs a {
@@ -632,6 +641,128 @@ a:hover {
 .breadcrumbs .separator {
     color: var(--border);
     padding: 0 0.25rem;
+}
+
+.breadcrumbs .search-form {
+    display: flex;
+    gap: 0;
+    background: var(--bg-light);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: var(--transition);
+    max-width: 350px;
+    width: auto;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.breadcrumbs .search-form:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+    transform: translateY(-2px);
+}
+
+.breadcrumbs .search-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: none;
+    background: transparent;
+    font-size: 0.9rem;
+    outline: none;
+    color: var(--text-dark);
+    min-width: 200px;
+}
+
+.breadcrumbs .search-input::placeholder {
+    color: var(--text-muted);
+}
+
+.breadcrumbs .search-form .btn {
+    border-radius: 0;
+    padding: 0.75rem 1.25rem;
+    background: var(--accent-gradient);
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    font-size: 0.9rem;
+}
+
+.breadcrumbs .search-form .btn:hover {
+    background: var(--accent-gradient-hover);
+}
+
+/* Адаптивность для хлебных крошек с поиском */
+@media (max-width: 1024px) {
+    .breadcrumbs .search-form {
+        max-width: 300px;
+    }
+
+    .breadcrumbs .search-input {
+        min-width: 180px;
+    }
+}
+
+@media (max-width: 768px) {
+    .breadcrumbs {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .breadcrumbs-nav {
+        justify-content: center;
+        order: 1;
+    }
+
+    .breadcrumbs .search-form {
+        margin-left: 0;
+        max-width: 100%;
+        order: 2;
+    }
+
+    .breadcrumbs .search-input {
+        min-width: auto;
+        flex: 1;
+    }
+}
+
+@media (max-width: 480px) {
+    .breadcrumbs {
+        gap: 0.75rem;
+    }
+
+    .breadcrumbs-nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .breadcrumbs .separator {
+        display: none;
+    }
+
+    .breadcrumbs a,
+    .breadcrumbs span {
+        padding: 0.4rem 0.6rem;
+    }
+
+    .breadcrumbs .search-form .btn {
+        padding: 0.75rem 1rem;
+    }
+
+    .breadcrumbs .search-form .btn span {
+        display: none;
+        /* Скрываем текст "Поиск" на очень маленьких экранах */
+    }
+
+    .breadcrumbs .search-form .btn::after {
+        content: '🔍';
+    }
 }
 
 /* ------------------------------
@@ -807,7 +938,7 @@ a:hover {
 
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 2rem;
     margin: 2rem 0;
 }
@@ -824,6 +955,7 @@ a:hover {
     display: flex;
     flex-direction: column;
     height: 100%;
+    min-height: 520px;
 }
 
 .product-card::before {
@@ -852,13 +984,14 @@ a:hover {
     position: relative;
     overflow: hidden;
     border-radius: var(--radius);
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
     background: var(--bg-gray);
     aspect-ratio: 1/1;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
+    padding: 0.5rem;
+    flex-shrink: 0;
 }
 
 .product-image {
@@ -866,7 +999,7 @@ a:hover {
     height: 100%;
     object-fit: contain;
     transition: var(--transition);
-    max-height: 200px;
+    max-height: 280px;
 }
 
 .product-card:hover .product-image {
@@ -881,7 +1014,7 @@ a:hover {
     line-height: 1.4;
     color: var(--text-dark);
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
     min-height: 3.5em;
@@ -1280,6 +1413,7 @@ footer {
     grid-template-columns: 2fr 1fr 1fr 1fr;
     gap: 3rem;
     margin-bottom: 2rem;
+    align-items: start;
 }
 
 .footer-section {
@@ -1299,18 +1433,19 @@ footer {
 }
 
 .footer-logo {
-    height: 30px;
+    height: 35px;
     width: auto;
 }
 
 .footer-image {
     margin: 1rem 0;
+    text-align: center;
 }
 
 .footer-photo {
     width: 100%;
-    max-width: 280px;
-    height: 180px;
+    max-width: 250px;
+    height: 160px;
     object-fit: cover;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
@@ -1327,13 +1462,13 @@ footer {
     color: #94a3b8;
     line-height: 1.6;
     font-size: 0.95rem;
+    margin-bottom: 1rem;
 }
 
 .footer-contacts {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    margin-top: 1rem;
 }
 
 .contact-item {
@@ -1348,12 +1483,21 @@ footer {
     font-size: 1.1rem;
     width: 20px;
     text-align: center;
+    flex-shrink: 0;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
 }
 
 .footer-links h4 {
     color: var(--text-light);
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
     font-size: 1.125rem;
+    font-weight: 600;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 0.5rem;
 }
 
 .footer-links a {
@@ -1362,6 +1506,11 @@ footer {
     padding: 0.5rem 0;
     transition: var(--transition);
     text-decoration: none;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+.footer-links a:last-child {
+    border-bottom: none;
 }
 
 .footer-links a:hover {
@@ -1374,6 +1523,7 @@ footer {
     padding-top: 1.5rem;
     text-align: center;
     color: #94a3b8;
+    font-size: 0.9rem;
 }
 
 /* ------------------------------
@@ -1424,16 +1574,21 @@ footer {
 
     .footer-content {
         grid-template-columns: 1fr 1fr;
-        gap: 2rem;
+        gap: 2.5rem;
     }
 
     .footer-section {
         grid-column: 1 / -1;
         text-align: center;
+        align-items: center;
     }
 
     .footer-photo {
         margin: 1rem auto;
+    }
+
+    .footer-contacts {
+        align-items: center;
     }
 }
 

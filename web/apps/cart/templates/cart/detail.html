@@ -23,7 +23,7 @@
             </div>
 
             <div class="cart-item-price">
-                {{ item.price|floatformat:2 }} ₽
+                {{ item.price|floatformat:2 }} р
             </div>
 
             <div class="cart-item-quantity">
@@ -37,7 +37,7 @@
             </div>
 
             <div class="cart-item-total">
-                <strong>{{ item.total_price|floatformat:2 }} ₽</strong>
+                <strong>{{ item.total_price|floatformat:2 }} р</strong>
             </div>
 
             <div class="cart-item-remove">
@@ -52,7 +52,7 @@
     </div>
 
     <div class="cart-summary">
-        <p class="cart-total">Итого: <strong>{{ cart.get_total_price|floatformat:2 }} ₽</strong></p>
+        <p class="cart-total">Итого: <strong>{{ cart.get_total_price|floatformat:2 }} р</strong></p>
 
         <div class="cart-actions">
             <a href="{% url 'catalog:product_list' %}" class="btn-outline-secondary">← Продолжить покупки</a>

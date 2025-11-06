@@ -5,7 +5,7 @@
 
 {% block extra_head %}
 <meta name="description"
-    content="{{ product.name }} — купить онлайн в GoldDecor. Цена: {{ product.price|floatformat:2 }} ₽.">
+    content="{{ product.name }} — купить онлайн в GoldDecor. Цена: {{ product.price|floatformat:2 }} р.">
 {% endblock %}
 
 {% block content %}
@@ -30,7 +30,7 @@
         <div class="product-detail-info">
             <h1 class="product-detail-title">{{ product.name }}</h1>
             <span class="badge bg-secondary">{{ product.category.name }}</span>
-            <p class="product-detail-price">{{ product.price|floatformat:2 }} ₽</p>
+            <p class="product-detail-price">{{ product.price|floatformat:2 }} р</p>
 
             <div class="product-description">
                 <h4>Описание</h4>
@@ -83,7 +83,7 @@
 <!-- Условия доставки -->
 <section class="delivery-info">
     <h3>📦 Условия доставки</h3>
-    <p>Бесплатная доставка при заказе от <strong>250 ₽</strong>.
+    <p>Бесплатная доставка при заказе от <strong>250 р</strong>.
         Доставка по всей Беларуси. Самовывоз — бесплатно.</p>
 </section>
 
@@ -97,7 +97,7 @@
             <img src="{% if p.image %}{{ p.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
                 alt="{{ p.name }}" class="product-image">
             <h4 class="product-title">{{ p.name }}</h4>
-            <p class="price">{{ p.price|floatformat:2 }} ₽</p>
+            <p class="price">{{ p.price|floatformat:2 }} р</p>
             <a href="{{ p.get_absolute_url }}" class="btn-outline-primary btn-sm">Подробнее</a>
         </div>
         {% endfor %}

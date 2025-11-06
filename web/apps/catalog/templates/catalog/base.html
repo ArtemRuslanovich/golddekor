@@ -16,7 +16,7 @@
     <header class="navbar">
         <div class="container">
             <a href="{% url 'catalog:product_list' %}" class="navbar-brand">
-                🏠 GoldDecor
+                🎨 GoldDecor
             </a>
 
             <nav class="nav-links">
@@ -34,12 +34,12 @@
                     <div class="catalog-menu" id="catalogMenu">
                         <a href="{% url 'catalog:product_list' %}"
                             class="catalog-item {% if not category %}active{% endif %}">
-                            Все категории
+                            📁 Все категории
                         </a>
                         {% for cat in categories %}
                         <a href="{{ cat.get_absolute_url }}"
                             class="catalog-item {% if category and category.slug == cat.slug %}active{% endif %}">
-                            {{ cat.name }}
+                            📦 {{ cat.name }}
                         </a>
                         {% endfor %}
                     </div>
@@ -57,11 +57,16 @@
                 <div class="user-menu">
                     <details>
                         <summary class="nav-link user-summary">
-                            👤 {{ user.get_full_name|default:user.username }}
+                            <div class="user-avatar">
+                                {{ user.username|first|upper }}
+                            </div>
+                            {{ user.get_full_name|default:user.username }}
                         </summary>
                         <div class="dropdown">
                             <div class="user-info">
-                                Вы вошли как <strong>{{ user.username }}</strong>
+                                <div>Вы вошли как</div>
+                                <strong>{{ user.username }}</strong>
+                                <div class="user-email">{{ user.email|default:"" }}</div>
                             </div>
                             <hr>
                             <form method="post" action="{% url 'logout' %}">
@@ -74,20 +79,60 @@
                     </details>
                 </div>
                 {% else %}
-                <a href="{% url 'login' %}" class="nav-link">Войти</a>
-                <a href="{% url 'register' %}" class="nav-link">Регистрация</a>
+                <a href="{% url 'login' %}" class="btn btn-outline btn-sm">Войти</a>
+                <a href="{% url 'register' %}" class="btn btn-sm">Регистрация</a>
                 {% endif %}
             </nav>
         </div>
     </header>
 
     <main class="main-content">
-        {% block content %}{% endblock %}
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
     </main>
 
     <footer>
         <div class="container">
-            <p>&copy; 2025 GoldDecor</p>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-brand">🎨 GoldDecor</div>
+                    <p class="footer-description">
+                        Интернет-магазин качественных лакокрасочных материалов.
+                        Широкий ассортимент по доступным ценам.
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <h4>Категории</h4>
+                    <a href="{% url 'catalog:product_list' %}">Все товары</a>
+                    {% for cat in categories %}
+                    <a href="{{ cat.get_absolute_url }}">{{ cat.name }}</a>
+                    {% endfor %}
+                </div>
+                <div class="footer-links">
+                    <h4>Помощь</h4>
+                    <a href="#">Доставка и оплата</a>
+                    <a href="#">Гарантия</a>
+                    <a href="#">Контакты</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Аккаунт</h4>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'cart:cart_detail' %}">Корзина</a>
+                    <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit"
+                            style="background: none; border: none; color: #94a3b8; cursor: pointer; padding: 0; text-align: left; font: inherit;">Выйти</button>
+                    </form>
+                    {% else %}
+                    <a href="{% url 'login' %}">Войти</a>
+                    <a href="{% url 'register' %}">Регистрация</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 GoldDecor. Все права защищены.</p>
+            </div>
         </div>
     </footer>
 
@@ -105,6 +150,16 @@
             document.addEventListener('click', (e) => {
                 if (!container.contains(e.target)) {
                     container.classList.remove('active');
+                }
+            });
+
+            // Добавляем класс при скролле для навигации
+            window.addEventListener('scroll', () => {
+                const navbar = document.querySelector('.navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
                 }
             });
         });

@@ -16,9 +16,14 @@
     <span class="separator">›</span>
     {% endif %}
     <span>Товары</span>
+
+    <form method="get" class="search-form">
+        <input type="text" name="q" placeholder="Поиск товаров..." value="{{ query|default:'' }}" class="search-input">
+        <button type="submit" class="btn">🔍 Поиск</button>
+    </form>
 </nav>
 
-<!-- Заголовок и поиск -->
+<!-- Заголовок и поиск
 <div class="catalog-header">
     <h1 class="catalog-title">
         {% if category %}
@@ -32,7 +37,7 @@
         <input type="text" name="q" placeholder="Поиск товаров..." value="{{ query|default:'' }}" class="search-input">
         <button type="submit" class="btn">🔍 Поиск</button>
     </form>
-</div>
+</div> -->
 
 <!-- Результаты поиска -->
 {% if query %}

@@ -1759,7 +1759,7 @@ footer {
 .breadcrumbs {
     margin-bottom: 2rem;
     font-size: 0.95rem;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 0.5rem;

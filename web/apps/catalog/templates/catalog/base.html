@@ -24,12 +24,14 @@
             <nav class="nav-links" style="display:flex;align-items:center;gap:1rem;">
 
                 <!-- 🔽 Кнопка Каталог -->
-                <div class="catalog-container">
-                    <button class="catalog-btn" id="catalogToggle">
-                        <span class="burger">
-                            <span></span><span></span><span></span>
-                        </span>
-                        Каталог
+                <div class="catalog-container" id="catalogContainer">
+                    <button class="catalog-btn" id="catalogBtn">
+                        <span>Каталог</span>
+                        <div class="burger">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
                     </button>
 
                     <div class="catalog-menu" id="catalogMenu">
@@ -63,16 +65,16 @@
                         <summary style="list-style:none;cursor:pointer;" class="nav-link">
                             👤 {{ user.get_full_name|default:user.username }}
                         </summary>
-                        <div class="dropdown" style="position:absolute;right:0;top:120%;background:#fff;border:1px solid var(--border);
-                                    border-radius:var(--radius);box-shadow:var(--shadow);min-width:180px;z-index:10;">
+                        <div class="dropdown"
+                            style="position:absolute;right:0;top:120%;background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);min-width:180px;z-index:10;">
                             <div style="padding:0.8rem;color:var(--text-muted);font-size:0.9rem;">
                                 Вы вошли как <strong>{{ user.username }}</strong>
                             </div>
                             <hr style="border:none;border-top:1px solid var(--border);margin:0;">
                             <form method="post" action="{% url 'logout' %}" style="margin:0;">
                                 {% csrf_token %}
-                                <button type="submit" style="width:100%;background:none;border:none;padding:0.8rem;text-align:left;
-                                               cursor:pointer;color:var(--text-dark);font-size:0.95rem;">
+                                <button type="submit"
+                                    style="width:100%;background:none;border:none;padding:0.8rem;text-align:left;cursor:pointer;color:var(--text-dark);font-size:0.95rem;">
                                     🚪 Выйти
                                 </button>
                             </form>
@@ -87,36 +89,16 @@
         </div>
     </header>
 
-    <!-- Сообщения -->
-    <main class="container" style="max-width:1200px;margin:2rem auto;padding:0 1rem;flex:1;">
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert" style="background:var(--bg-gray);padding:1rem 1.2rem;margin-bottom:1rem;
-                    border-left:4px solid var(--accent);border-radius:var(--radius);">
-            {{ message }}
-        </div>
-        {% endfor %}
-        {% endif %}
-        {% block content %}{% endblock %}
-    </main>
-
-    <!-- Подвал -->
-    <footer>
-        <div class="container">
-            <p>© {{ now|date:"Y" }} GoldDecor — Оптовая продажа лакокрасочной продукции</p>
-        </div>
-    </footer>
-
-    <!-- JS для кнопки Каталог -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const toggle = document.getElementById('catalogToggle');
-            const container = document.querySelector('.catalog-container');
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('catalogBtn');
+            const container = document.getElementById('catalogContainer');
 
-            toggle.addEventListener('click', () => {
+            btn.addEventListener('click', () => {
                 container.classList.toggle('active');
             });
 
+            // Закрытие при клике вне меню
             document.addEventListener('click', (e) => {
                 if (!container.contains(e.target)) {
                     container.classList.remove('active');

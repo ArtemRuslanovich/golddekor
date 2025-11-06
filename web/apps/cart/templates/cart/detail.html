@@ -4,111 +4,77 @@
 {% block title %}Корзина - GoldDecor{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1 class="mb-4 text-center">🛒 Ваша корзина</h1>
 
-    {% if cart %}
-    <div class="card shadow-sm border-0">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th scope="col">Товар</th>
-                            <th scope="col">Цена</th>
-                            <th scope="col">Количество</th>
-                            <th scope="col">Итого</th>
-                            <th scope="col">Действия</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in cart %}
-                        <tr class="align-middle">
-                            <td>
-                                <div class="d-flex align-items-center">
-                                    <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" 
-                                         alt="{{ item.product.name }}"
-                                         class="rounded me-3"
-                                         style="width: 60px; height: 60px; object-fit: cover;">
-                                    <div>
-                                        <a href="{{ item.product.get_absolute_url }}" class="fw-semibold text-dark text-decoration-none">
-                                            {{ item.product.name }}
-                                        </a>
-                                        <div class="text-muted small">{{ item.product.category.name }}</div>
-                                    </div>
-                                </div>
-                            </td>
+<h1 class="page-title">🛒 Ваша корзина</h1>
 
-                            <td><strong>{{ item.price|floatformat:2 }} р</strong></td>
+{% if cart %}
+<section class="cart-container">
 
-                            <td>
-                                <form action="{% url 'cart:cart_update' item.product.id %}" method="post" class="d-flex align-items-center">
-                                    {% csrf_token %}
-                                    <input type="number" name="quantity" value="{{ item.quantity }}" 
-                                           min="1" max="{{ item.product.stock }}"
-                                           class="form-control form-control-sm text-center" style="width: 70px;">
-                                    <button type="submit" class="btn btn-sm btn-outline-primary ms-2" title="Обновить количество">
-                                        📝
-                                    </button>
-                                </form>
-                                <small class="text-muted">макс: {{ item.product.stock }} шт.</small>
-                            </td>
+    <div class="cart-list">
+        {% for item in cart %}
+        <div class="cart-item">
+            <div class="cart-item-info">
+                <img src="{% if item.product.image %}{{ item.product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
+                    alt="{{ item.product.name }}" class="cart-item-image">
+                <div>
+                    <a href="{{ item.product.get_absolute_url }}" class="cart-item-name">{{ item.product.name }}</a>
+                    <div class="cart-item-category">{{ item.product.category.name }}</div>
+                </div>
+            </div>
 
-                            <td><strong>{{ item.total_price|floatformat:2 }} р</strong></td>
+            <div class="cart-item-price">
+                {{ item.price|floatformat:2 }} ₽
+            </div>
 
-                            <td>
-                                <form action="{% url 'cart:cart_remove' item.product.id %}" method="post" 
-                                      onsubmit="return confirm('Удалить {{ item.product.name }} из корзины?');">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-sm btn-danger" title="Удалить">
-                                        🗑️
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                    <tfoot class="table-light">
-                        <tr>
-                            <td colspan="3" class="text-end fw-bold">Итого:</td>
-                            <td colspan="2" class="fw-bold h5 text-gold">
-                                {{ cart.get_total_price|floatformat:2 }} р
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
+            <div class="cart-item-quantity">
+                <form action="{% url 'cart:cart_update' item.product.id %}" method="post" class="cart-quantity-form">
+                    {% csrf_token %}
+                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1"
+                        max="{{ item.product.stock }}" class="quantity-input">
+                    <button type="submit" class="btn-outline-primary btn-sm" title="Обновить количество">📝</button>
+                </form>
+                <small class="text-muted">макс: {{ item.product.stock }} шт.</small>
+            </div>
+
+            <div class="cart-item-total">
+                <strong>{{ item.total_price|floatformat:2 }} ₽</strong>
+            </div>
+
+            <div class="cart-item-remove">
+                <form action="{% url 'cart:cart_remove' item.product.id %}" method="post"
+                    onsubmit="return confirm('Удалить {{ item.product.name }} из корзины?');">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-outline-secondary btn-sm" title="Удалить">🗑️</button>
+                </form>
             </div>
         </div>
+        {% endfor %}
     </div>
 
-    <!-- Кнопки действий -->
-    <div class="d-flex flex-wrap justify-content-between align-items-center mt-4 gap-2">
-        <div>
-            <a href="{% url 'catalog:product_list' %}" class="btn btn-outline-secondary">
-                ← Продолжить покупки
-            </a>
-            <form action="{% url 'cart:clear_cart' %}" method="post" class="d-inline">
+    <div class="cart-summary">
+        <p class="cart-total">Итого: <strong>{{ cart.get_total_price|floatformat:2 }} ₽</strong></p>
+
+        <div class="cart-actions">
+            <a href="{% url 'catalog:product_list' %}" class="btn-outline-secondary">← Продолжить покупки</a>
+
+            <form action="{% url 'cart:clear_cart' %}" method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-outline-danger ms-2">
-                    🧹 Очистить корзину
-                </button>
+                <button type="submit" class="btn-outline-secondary">🧹 Очистить корзину</button>
             </form>
+
+            <a href="#" class="btn">🚀 Оформить заказ</a>
         </div>
-        <a href="#" class="btn btn-gold btn-lg">
-            🚀 Оформить заказ
-        </a>
     </div>
 
-    {% else %}
-    <div class="text-center py-5">
-        <img src="{% static 'img/no_image.png' %}" alt="Пустая корзина" 
-             class="mb-4" style="width: 120px; opacity: 0.7;">
-        <h3>🛒 Ваша корзина пуста</h3>
-        <p class="text-muted mb-4">Добавьте товары, чтобы сделать заказ.</p>
-        <a href="{% url 'catalog:product_list' %}" class="btn btn-gold btn-lg">
-            🛍 Перейти к каталогу
-        </a>
-    </div>
-    {% endif %}
+</section>
+
+{% else %}
+<div class="no-products">
+    <img src="{% static 'img/no_image.png' %}" alt="Пустая корзина" class="empty-cart-image">
+    <h3>🛒 Ваша корзина пуста</h3>
+    <p>Добавьте товары, чтобы сделать заказ.</p>
+    <a href="{% url 'catalog:product_list' %}" class="btn">🛍 Перейти к каталогу</a>
 </div>
+{% endif %}
+
 {% endblock %}

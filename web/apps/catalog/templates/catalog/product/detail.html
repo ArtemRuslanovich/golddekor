@@ -4,132 +4,105 @@
 {% block title %}{{ product.name }} - GoldDecor{% endblock %}
 
 {% block extra_head %}
-<meta name="description" content="{{ product.name }} — купить онлайн в GoldDecor. Цена: {{ product.price|floatformat:2 }} р.">
+<meta name="description"
+    content="{{ product.name }} — купить онлайн в GoldDecor. Цена: {{ product.price|floatformat:2 }} ₽.">
 {% endblock %}
 
 {% block content %}
-<nav aria-label="breadcrumb" class="mb-4">
-    <ol class="breadcrumb bg-transparent px-0">
-        <li class="breadcrumb-item"><a href="{% url 'catalog:product_list' %}">🏠 Главная</a></li>
-        <li class="breadcrumb-item"><a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a></li>
-        <li class="breadcrumb-item active">{{ product.name }}</li>
-    </ol>
+
+<!-- Хлебные крошки -->
+<nav class="breadcrumbs">
+    <a href="{% url 'catalog:product_list' %}">Главная</a> ›
+    <a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a> ›
+    <span>{{ product.name }}</span>
 </nav>
 
-<div class="row g-4">
-    <!-- Фото товара -->
-    <div class="col-md-6">
-        <div class="card shadow-sm border-0">
-            <div class="card-body text-center">
-                <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
-                     alt="{{ product.name }}"
-                     class="img-fluid rounded shadow-sm"
-                     style="max-height: 480px; object-fit: contain; transition: opacity .3s ease-in-out;">
-            </div>
+<!-- Основная карточка товара -->
+<section class="product-detail">
+    <div class="product-detail-grid">
+        <!-- Фото -->
+        <div class="product-detail-image">
+            <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
+                alt="{{ product.name }}">
         </div>
-    </div>
-    
-    <!-- Информация о товаре -->
-    <div class="col-md-6">
-        <div class="card border-0 shadow-sm">
-            <div class="card-body">
-                <h1 class="fw-bold mb-3">{{ product.name }}</h1>
-                
-                <span class="badge bg-secondary mb-3">{{ product.category.name }}</span>
-                
-                <h2 class="text-gold fw-bold mb-4">{{ product.price|floatformat:2 }} р</h2>
-                
-                <div class="mb-4">
-                    <h5>Описание</h5>
-                    <p class="card-text">
-                        {% if product.description %}
-                            {{ product.description|linebreaks }}
-                        {% else %}
-                            Описание отсутствует.
-                        {% endif %}
-                    </p>
-                </div>
-                
-                <div class="mb-4">
-                    <h5>Наличие</h5>
-                    {% if product.stock > 0 %}
-                        <div class="d-flex align-items-center">
-                            <span class="badge bg-success me-2">В наличии</span>
-                            <small class="text-muted">Осталось: {{ product.stock }} шт.</small>
-                        </div>
-                    {% else %}
-                        <span class="badge bg-danger">Нет в наличии</span>
-                    {% endif %}
-                </div>
 
-                <div class="d-grid gap-2 d-md-flex">
-                    <a href="{% url 'catalog:product_list' %}" class="btn btn-outline-secondary me-md-2">
-                        ← Назад
-                    </a>
-                    
-                    {% if user.is_authenticated %}
-                        {% if product.stock > 0 %}
-                        <form action="{% url 'cart:cart_add' product.id %}" method="post" class="flex-fill">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-gold w-100">
-                                🛒 Добавить в корзину
-                            </button>
-                        </form>
-                        {% else %}
-                        <button class="btn btn-secondary" disabled>Нет в наличии</button>
-                        {% endif %}
-                    {% else %}
-                    <a href="{% url 'login' %}" class="btn btn-outline-primary">
-                        Купить онлайн
-                    </a>
-                    {% endif %}
-                </div>
+        <!-- Информация -->
+        <div class="product-detail-info">
+            <h1 class="product-detail-title">{{ product.name }}</h1>
+            <span class="badge bg-secondary">{{ product.category.name }}</span>
+            <p class="product-detail-price">{{ product.price|floatformat:2 }} ₽</p>
 
-                {% if product.created %}
-                <div class="mt-4 pt-3 border-top small text-muted">
-                    Добавлен: {{ product.created|date:"d.m.Y" }}
-                    {% if product.updated != product.created %}
-                        <br>Обновлён: {{ product.updated|date:"d.m.Y" }}
-                    {% endif %}
-                </div>
+            <div class="product-description">
+                <h4>Описание</h4>
+                {% if product.description %}
+                <p>{{ product.description|linebreaks }}</p>
+                {% else %}
+                <p class="text-muted">Описание отсутствует.</p>
                 {% endif %}
             </div>
+
+            <div class="product-stock">
+                <h4>Наличие</h4>
+                {% if product.stock > 0 %}
+                <span class="badge bg-success">В наличии</span>
+                <small class="text-muted">Осталось: {{ product.stock }} шт.</small>
+                {% else %}
+                <span class="badge bg-danger">Нет в наличии</span>
+                {% endif %}
+            </div>
+
+            <div class="product-actions">
+                <a href="{% url 'catalog:product_list' %}" class="btn-outline-secondary">← Назад</a>
+
+                {% if user.is_authenticated %}
+                {% if product.stock > 0 %}
+                <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">🛒 В корзину</button>
+                </form>
+                {% else %}
+                <button class="btn-outline-secondary" disabled>Нет в наличии</button>
+                {% endif %}
+                {% else %}
+                <a href="{% url 'login' %}" class="btn-outline-primary">🔒 Войти для покупки</a>
+                {% endif %}
+            </div>
+
+            {% if product.created %}
+            <div class="product-meta">
+                Добавлен: {{ product.created|date:"d.m.Y" }}
+                {% if product.updated != product.created %}
+                <br>Обновлён: {{ product.updated|date:"d.m.Y" }}
+                {% endif %}
+            </div>
+            {% endif %}
         </div>
     </div>
-</div>
+</section>
 
 <!-- Условия доставки -->
-<div class="row mt-5">
-    <div class="col-12">
-        <div class="card border-0 shadow-sm">
-            <div class="card-header bg-light">
-                <h5 class="mb-0">📦 Условия доставки</h5>
-            </div>
-            <div class="card-body">
-                <p class="mb-0">Бесплатная доставка при заказе от <strong>250 р</strong>. 
-                Отправляем по всей Беларуси. Самовывоз — бесплатно.</p>
-            </div>
-        </div>
-    </div>
-</div>
+<section class="delivery-info">
+    <h3>📦 Условия доставки</h3>
+    <p>Бесплатная доставка при заказе от <strong>250 ₽</strong>.
+        Доставка по всей Беларуси. Самовывоз — бесплатно.</p>
+</section>
 
 <!-- Похожие товары -->
 {% if related_products %}
-<div class="row mt-5">
-    <div class="col-12">
-        <h4 class="mb-4">🛍 Похожие товары</h4>
-        <div class="product-grid">
-            {% for p in related_products %}
-            <div class="product-card">
-                <img src="{% if p.image %}{{ p.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
-                     alt="{{ p.name }}" class="product-image mb-3">
-                <h6>{{ p.name }}</h6>
-                <p class="text-primary fw-bold">{{ p.price|floatformat:2 }} р</p>
-                <a href="{{ p.get_absolute_url }}" class="btn btn-outline-primary btn-sm">Подробнее</a>
-            </div>
-            {% endfor %}
+<section class="related-products">
+    <h3>🛍 Похожие товары</h3>
+    <div class="product-grid">
+        {% for p in related_products %}
+        <div class="product-card">
+            <img src="{% if p.image %}{{ p.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
+                alt="{{ p.name }}" class="product-image">
+            <h4 class="product-title">{{ p.name }}</h4>
+            <p class="price">{{ p.price|floatformat:2 }} ₽</p>
+            <a href="{{ p.get_absolute_url }}" class="btn-outline-primary btn-sm">Подробнее</a>
         </div>
+        {% endfor %}
     </div>
-</div>
+</section>
 {% endif %}
+
 {% endblock %}

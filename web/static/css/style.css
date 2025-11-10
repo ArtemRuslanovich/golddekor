@@ -1409,11 +1409,32 @@ footer {
 }
 
 .footer-content {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    align-items: start;
-    gap: 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 2rem;
     margin-bottom: 2rem;
+}
+
+.footer-right {
+    text-align: right;
+}
+
+.footer-right .footer-links a {
+    text-align: right;
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .footer-right {
+        text-align: center;
+    }
 }
 
 .footer-section {

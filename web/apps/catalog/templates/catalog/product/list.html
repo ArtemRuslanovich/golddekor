@@ -120,9 +120,9 @@
 <div class="pagination">
     {% if products.has_previous %}
     <a href="?page={{ products.previous_page_number }}{% if query %}&amp;q={{ query }}{% endif %}{% if category %}&amp;category={{ category.slug }}{% endif %}"
-        class="prev">Назад</a>
+        class="prev">← Назад</a>
     {% else %}
-    <span class="disabled">Назад</span>
+    <span class="disabled prev">← Назад</span>
     {% endif %}
 
     {% for i in products.paginator.page_range %}
@@ -130,16 +130,17 @@
     <span class="current">{{ i }}</span>
     {% else %}
     <a
-        href="?page={{ i }}{% if query %}&amp;q={{ query }}{% endif %}{% if category %}&amp;category={{ category.slug }}{% endif %}">{{
-        i }}</a>
+        href="?page={{ i }}{% if query %}&amp;q={{ query }}{% endif %}{% if category %}&amp;category={{ category.slug }}{% endif %}">
+        {{ i }}
+    </a>
     {% endif %}
     {% endfor %}
 
     {% if products.has_next %}
     <a href="?page={{ products.next_page_number }}{% if query %}&amp;q={{ query }}{% endif %}{% if category %}&amp;category={{ category.slug }}{% endif %}"
-        class="next">Вперёд</a>
+        class="next">Вперёд →</a>
     {% else %}
-    <span class="disabled">Вперёд</span>
+    <span class="disabled next">Вперёд →</span>
     {% endif %}
 </div>
 {% endif %}

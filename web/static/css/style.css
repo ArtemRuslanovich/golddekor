@@ -1410,10 +1410,10 @@ footer {
 
 .footer-content {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
+    align-items: start;
     gap: 3rem;
     margin-bottom: 2rem;
-    align-items: start;
 }
 
 .footer-section {

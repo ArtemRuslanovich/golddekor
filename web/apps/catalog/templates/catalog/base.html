@@ -95,24 +95,32 @@
     <footer>
         <div class="container">
             <div class="footer-content">
+                <!-- Left: Brand + Help -->
                 <div class="footer-section">
                     <div class="footer-brand">
                         <img src="{% static 'img/logo.png' %}" alt="GoldDecor" class="footer-logo">
                     </div>
+
                     <div class="footer-links">
                         <h4>Помощь</h4>
                         <a href="#">Доставка и оплата</a>
                         <a href="#">Гарантия</a>
                         <a href="#">Контакты</a>
                     </div>
+                </div>
+
+                <!-- Right: Account -->
+                <div class="footer-section footer-account">
                     <div class="footer-links">
                         <h4>Аккаунт</h4>
                         {% if user.is_authenticated %}
                         <a href="{% url 'cart:cart_detail' %}">Корзина</a>
-                        <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                        <form method="post" action="{% url 'logout' %}" style="display:inline;">
                             {% csrf_token %}
                             <button type="submit"
-                                style="background: none; border: none; color: #94a3b8; cursor: pointer; padding: 0; text-align: left; font: inherit;">Выйти</button>
+                                style="background:none; border:none; color:#94a3b8; cursor:pointer; padding:0; text-align:left; font:inherit;">
+                                Выйти
+                            </button>
                         </form>
                         {% else %}
                         <a href="{% url 'login' %}">Войти</a>
@@ -121,6 +129,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="footer-bottom">
                 <p>&copy; 2025 GoldDecor. Все права защищены.</p>
             </div>

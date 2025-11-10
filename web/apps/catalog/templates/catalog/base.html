@@ -20,7 +20,6 @@
             </a>
 
             <nav class="nav-links">
-                <!-- 🔽 Кнопка Каталог -->
                 <div class="catalog-container" id="catalogContainer">
                     <button class="catalog-btn" id="catalogBtn">
                         <span>Каталог</span>
@@ -95,7 +94,6 @@
     <footer>
         <div class="container">
             <div class="footer-content">
-                <!-- Left: Brand + Help -->
                 <div class="footer-section">
                     <div class="footer-brand">
                         <img src="{% static 'img/logo.png' %}" alt="GoldDecor" class="footer-logo">
@@ -109,7 +107,6 @@
                     </div>
                 </div>
 
-                <!-- Right: Account -->
                 <div class="footer-section footer-account">
                     <div class="footer-links">
                         <h4>Аккаунт</h4>
@@ -146,14 +143,12 @@
                 container.classList.toggle('active');
             });
 
-            // Закрытие при клике вне меню
             document.addEventListener('click', (e) => {
                 if (!container.contains(e.target)) {
                     container.classList.remove('active');
                 }
             });
 
-            // Добавляем класс при скролле для навигации
             window.addEventListener('scroll', () => {
                 const navbar = document.querySelector('.navbar');
                 if (window.scrollY > 50) {

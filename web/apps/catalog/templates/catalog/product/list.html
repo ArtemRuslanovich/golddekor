@@ -7,7 +7,6 @@
 
 {% block content %}
 
-<!-- Хлебные крошки -->
 <nav class="breadcrumbs">
     <div class="breadcrumbs-nav">
         <a href="{% url 'catalog:product_list' %}">Главная</a>
@@ -27,23 +26,6 @@
     </form>
 </nav>
 
-<!-- Заголовок и поиск
-<div class="catalog-header">
-    <h1 class="catalog-title">
-        {% if category %}
-        {{ category.name }}
-        {% else %}
-        Все товары
-        {% endif %}
-    </h1>
-
-    <form method="get" class="search-form">
-        <input type="text" name="q" placeholder="Поиск товаров..." value="{{ query|default:'' }}" class="search-input">
-        <button type="submit" class="btn">🔍 Поиск</button>
-    </form>
-</div> -->
-
-<!-- Результаты поиска -->
 {% if query %}
 <div class="search-alert">
     Результаты поиска для: "<strong>{{ query }}</strong>"
@@ -51,7 +33,6 @@
 </div>
 {% endif %}
 
-<!-- Список категорий -->
 {% if categories %}
 <div class="category-buttons">
     <a href="{% url 'catalog:product_list' %}" class="category-btn {% if not category %}active{% endif %}">
@@ -66,7 +47,6 @@
 </div>
 {% endif %}
 
-<!-- Сетка товаров -->
 {% if products %}
 <div class="product-grid">
     {% for product in products %}
@@ -86,7 +66,6 @@
 
         <p class="price">{{ product.price|floatformat:2 }} р</p>
 
-        <!-- Улучшенные индикаторы наличия -->
         {% if product.stock > 10 %}
         <div class="stock-indicator stock-in">
             В наличии <span class="stock-count">{{ product.stock }} шт.</span>
@@ -115,7 +94,6 @@
     {% endfor %}
 </div>
 
-<!-- Пагинация -->
 {% if products.has_other_pages %}
 <div class="pagination">
     {% if products.has_previous %}

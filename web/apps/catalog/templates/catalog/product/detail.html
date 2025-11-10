@@ -10,23 +10,19 @@
 
 {% block content %}
 
-<!-- Хлебные крошки -->
 <nav class="breadcrumbs">
     <a href="{% url 'catalog:product_list' %}">Главная</a> ›
     <a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a> ›
     <span>{{ product.name }}</span>
 </nav>
 
-<!-- Основная карточка товара -->
 <section class="product-detail">
     <div class="product-detail-grid">
-        <!-- Фото -->
         <div class="product-detail-image">
             <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}"
                 alt="{{ product.name }}">
         </div>
 
-        <!-- Информация -->
         <div class="product-detail-info">
             <h1 class="product-detail-title">{{ product.name }}</h1>
             <span class="badge bg-secondary">{{ product.category.name }}</span>
@@ -80,14 +76,12 @@
     </div>
 </section>
 
-<!-- Условия доставки -->
 <section class="delivery-info">
     <h3>📦 Условия доставки</h3>
     <p>Бесплатная доставка при заказе от <strong>250 р</strong>.
         Доставка по всей Беларуси. Самовывоз — бесплатно.</p>
 </section>
 
-<!-- Похожие товары -->
 {% if related_products %}
 <section class="related-products">
     <h3>🛍 Похожие товары</h3>

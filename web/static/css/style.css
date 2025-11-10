@@ -639,7 +639,7 @@ a:hover {
 }
 
 .breadcrumbs .separator {
-    color: var(--border);
+    color: var(--accent-dark);
     padding: 0 0.25rem;
 }
 
@@ -1796,9 +1796,4 @@ footer {
     color: #fff;
     padding: 0.5rem 0.75rem;
     font-weight: 500;
-}
-
-.breadcrumbs .separator {
-    color: var(--border);
-    padding: 0 0.25rem;
 }
